@@ -2,31 +2,40 @@ var Base = require('class-extend');
 
 var Input = module.exports = Base.extend({
 
-    currentKey: null,
+    currentKeys: {},
 
     constructor: function() {
         window.addEventListener('keyup', this.onKeyUp.bind(this));
         window.addEventListener('keydown', this.onKeyDown.bind(this));
     },
 
-    onKeyUp: function() {
-        this.currentKey = null;
+    onKeyUp: function(e) {
+        this.currentKeys[e.keyCode] = false;
     },
 
     onKeyDown: function(e) {
-        this.currentKey = e.keyCode;
+        this.currentKeys[e.keyCode] = true;
     },
 
     isLeftPressed: function() {
-        return this.currentKey === Input.LEFT;
+        var leftKey = Input.LEFT,
+            currKeys = this.currentKeys;
+
+        return leftKey in currKeys && currKeys[leftKey] === true;
     },
 
     isRightPressed: function() {
-        return this.currentKey === Input.RIGHT;
+        var rightKey = Input.RIGHT,
+            currKeys = this.currentKeys;
+
+        return rightKey in currKeys && currKeys[rightKey] === true;
     },
 
     isActionPressed: function() {
-        return this.currentKey === Input.SPACE;
+        var actionKey = Input.SPACE,
+            currKeys = this.currentKeys;
+
+        return actionKey in currKeys && currKeys[actionKey] === true;
     }
 
 }, {
