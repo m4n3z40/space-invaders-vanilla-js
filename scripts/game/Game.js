@@ -1,17 +1,73 @@
-function Game(canvasId, size) {
-    var canvas = document.getElementById(canvasId);
+var Base = require('class-extend'),
+    Input = require('./Input'),
+    Player = require('./Player');
 
-    //Optional param
-    size = size || {width: 320, height: 480};
+module.exports = Base.extend({
 
-    canvas.width = size.width;
-    canvas.height = size.height;
+    canvas: null,
 
-    this.canvas = canvas;
-}
+    context: null,
 
-Game.prototype.init = function() {
-    console.log('Game started.');
-};
+    input: null,
 
-module.exports = Game;
+    bodies: [],
+
+    loaded: false,
+
+    constructor: function (canvasId, size) {
+        var canvas = document.getElementById(canvasId);
+
+        //Optional param
+        size = size || {width: 320, height: 480};
+
+        canvas.width = size.width;
+        canvas.height = size.height;
+
+        this.canvas = canvas;
+        this.context = canvas.getContext('2d');
+    },
+
+    init: function() {
+        this.input = new Input();
+
+        this.load();
+        this.update();
+        console.log('Game started.');
+    },
+
+    initPlayer: function() {
+        this.bodies.push(new Player(this));
+
+        console.log('Player added.');
+    },
+
+    load: function() {
+        this.initPlayer();
+
+        this.bodies.forEach(function(body) {
+            body.load();
+        });
+
+        this.loaded = true;
+        console.log('Game loaded.');
+    },
+
+    update: function() {
+        this.bodies.forEach(function(body) {
+            body.update();
+        });
+
+        this.draw();
+
+        window.requestAnimationFrame(this.update.bind(this));
+    },
+
+    draw: function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.bodies.forEach(function(body) {
+            body.draw();
+        });
+    }
+
+});
