@@ -53,6 +53,17 @@ module.exports = Base.extend({
         console.log('Enemies added');
     },
 
+    collectGarbage: function() {
+        var canvas = this.canvas;
+
+        this.bodies = this.bodies.filter(function(body) {
+            return !(body.position.x < -10 ||
+                     body.position.x > canvas.width + 10 ||
+                     body.position.y < -10 ||
+                     body.position.y > canvas.height + 10);
+        });
+    },
+
     load: function() {
         this.initPlayer();
         this.initEnemies();
@@ -71,6 +82,8 @@ module.exports = Base.extend({
         });
 
         this.draw();
+
+        this.collectGarbage();
 
         window.requestAnimationFrame(this.update.bind(this));
     },
