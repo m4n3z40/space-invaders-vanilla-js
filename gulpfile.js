@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
     stylus = require('gulp-stylus'),
+    jade = require('gulp-jade'),
     browserify = require('gulp-browserify'),
     uglify = require('gulp-uglify'),
     connect = require('gulp-connect'),
@@ -13,11 +14,12 @@ var server = {
         port: 3000
     },
     sources = {
-        html: './index.html',
+        jade: './**/*.jade',
         scripts: './scripts/main.js',
         stylus: './styles/main.styl'
     },
     distSources = {
+        root: './dist',
         js: './dist/js',
         css: './dist/css'
     };
@@ -27,7 +29,8 @@ var server = {
  */
 gulp.task('connect', function() {
     connect.server({
-       livereload: true,
+        root: distSources.root,
+        livereload: true,
         host: server.host,
         port: server.port
     });
@@ -37,16 +40,31 @@ gulp.task('connect', function() {
  * OPEN THE DEFAULT BROWSER AT THE SERVER URL
  */
 gulp.task('open', function() {
-    gulp.src(sources.html)
+    gulp.src(distSources.root)
         .pipe(open('', {url: 'http://' + server.host + ':' + server.port}));
 });
 
 /**
- * HELPER TO RELOAD THE BROWSER WHEN THE INDEX.HTML HAS CHANGED
+ * COMPILE JADE SOURCES IN DEVELOP MODE
  */
-gulp.task('html', function() {
-    gulp.src(sources.html)
+gulp.task('jade-dev', function() {
+    gulp.src([sources.jade, '!./node_modules/**/*.jade'])
+        .pipe(jade({
+            pretty: true
+        }))
+        .pipe(gulp.dest(distSources.root))
         .pipe(connect.reload());
+});
+
+/**
+ * COMPILE JADE SOURCES IN PRODUCTION MODE
+ */
+gulp.task('jade-prod', function() {
+    gulp.src([sources.jade, '!./node_modules/**/*.jade'])
+        .pipe(jade({
+            pretty: false
+        }))
+        .pipe(gulp.dest(distSources.root));
 });
 
 /**
@@ -93,8 +111,8 @@ gulp.task('browserify-prod', function() {
 /**
  * DEVELOPMENT WATCHER WITH LIVE RELOAD
  */
-gulp.task('serve', ['html', 'stylus-dev', 'browserify-dev', 'connect', 'open'], function() {
-    gulp.watch('./**/*.html', ['html']);
+gulp.task('serve', ['jade-dev', 'stylus-dev', 'browserify-dev', 'connect', 'open'], function() {
+    gulp.watch(sources.jade, ['jade-dev']);
     gulp.watch('./styles/**/*.styl', ['stylus-dev']);
     gulp.watch('./scripts/**/*.js', ['browserify-dev']);
 });
@@ -102,4 +120,4 @@ gulp.task('serve', ['html', 'stylus-dev', 'browserify-dev', 'connect', 'open'], 
 /**
  * DEFAULT: CREATE DIST FILES
  */
-gulp.task('default', ['stylus-prod', 'browserify-prod']);
+gulp.task('default', ['jade-prod', 'stylus-prod', 'browserify-prod']);
