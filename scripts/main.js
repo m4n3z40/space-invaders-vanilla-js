@@ -1,5 +1,5 @@
-var Game = require('./game/game');
+var Game = require('./game/Game');
 
-var gameInstance = new Game('gameCanvas', {width: 320, height: 480});
+var gameInstance = new Game('gameCanvas');
 
 gameInstance.init();
