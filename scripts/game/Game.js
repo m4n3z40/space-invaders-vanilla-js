@@ -1,6 +1,7 @@
 var Base = require('class-extend'),
     Input = require('./Input'),
-    Player = require('./Player');
+    Player = require('./Player'),
+    Enemy = require('./Enemy');
 
 module.exports = Base.extend({
 
@@ -41,8 +42,20 @@ module.exports = Base.extend({
         console.log('Player added.');
     },
 
+    initEnemies: function() {
+        for(var i = 0; i < 30; i++) {
+            this.bodies.push(new Enemy(this, null, {
+                x: (i % 10) * 25 ,
+                y: (i % 3) * 25 + 10
+            }));
+        }
+
+        console.log('Enemies added');
+    },
+
     load: function() {
         this.initPlayer();
+        this.initEnemies();
 
         this.bodies.forEach(function(body) {
             body.load();

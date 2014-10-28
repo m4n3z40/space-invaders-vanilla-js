@@ -8,6 +8,8 @@ module.exports = Base.extend({
 
     position: null,
 
+    speed: 0,
+
     constructor: function(game, size, initialPosition) {
         this.game = game;
         this.size = size;

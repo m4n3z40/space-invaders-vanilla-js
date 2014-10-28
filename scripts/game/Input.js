@@ -1,6 +1,6 @@
 var Base = require('class-extend');
 
-var Input = Base.extend({
+var Input = module.exports = Base.extend({
 
     currentKey: null,
 
@@ -36,7 +36,5 @@ var Input = Base.extend({
     LEFT: 37,
 
     RIGHT: 39
-    
-});
 
-module.exports = Input;
+});
