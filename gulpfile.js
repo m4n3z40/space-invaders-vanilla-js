@@ -40,7 +40,7 @@ gulp.task('connect', function() {
  * OPEN THE DEFAULT BROWSER AT THE SERVER URL
  */
 gulp.task('open', function() {
-    gulp.src(distSources.root)
+    gulp.src(sources.jade)
         .pipe(open('', {url: 'http://' + server.host + ':' + server.port}));
 });
 
