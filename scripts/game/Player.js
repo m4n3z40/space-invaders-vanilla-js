@@ -48,6 +48,8 @@ var Player = module.exports = Body.extend({
         setTimeout(function() {
             me.isFiring = false;
         }, me.fireDelay)
+
+        this.game.playSound('shoot');
     },
 
     onDestroyed: function() {

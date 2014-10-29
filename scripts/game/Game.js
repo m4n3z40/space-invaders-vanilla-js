@@ -13,6 +13,8 @@ module.exports = Base.extend({
 
     bodies: [],
 
+    sounds: {},
+
     loaded: false,
 
     constructor: function (canvasId, size) {
@@ -97,6 +99,19 @@ module.exports = Base.extend({
         });
     },
 
+    addSound: function(key, sound) {
+        console.log('Adding sound asset: ' + key);
+
+        this.sounds[key] = sound;
+    },
+
+    playSound: function(key) {
+        if (key in this.sounds) {
+            this.sounds[key].load();
+            this.sounds[key].play();
+        }
+    },
+
     addBody: function(body) {
         if (body instanceof Enemy) {
             Enemy.enemiesLeft++;
@@ -113,6 +128,8 @@ module.exports = Base.extend({
     },
 
     load: function() {
+        this.addSound('shoot', document.getElementById('shootSound'));
+
         this.initPlayer();
         this.initEnemies();
 

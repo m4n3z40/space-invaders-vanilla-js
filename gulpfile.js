@@ -4,7 +4,8 @@ var gulp = require('gulp'),
     browserify = require('gulp-browserify'),
     uglify = require('gulp-uglify'),
     connect = require('gulp-connect'),
-    open = require('gulp-open');
+    open = require('gulp-open'),
+    copy = require('gulp-copy');
 
 /**
  * CONFIG
@@ -16,7 +17,8 @@ var server = {
     sources = {
         jade: './**/*.jade',
         scripts: './scripts/main.js',
-        stylus: './styles/main.styl'
+        stylus: './styles/main.styl',
+        assets: './assets/**/*'
     },
     distSources = {
         root: './dist',
@@ -40,8 +42,16 @@ gulp.task('connect', function() {
  * OPEN THE DEFAULT BROWSER AT THE SERVER URL
  */
 gulp.task('open', function() {
-    gulp.src(sources.jade)
+    gulp.src(sources.scripts)
         .pipe(open('', {url: 'http://' + server.host + ':' + server.port}));
+});
+
+/**
+ * COPY ASSETS FOLDER
+ */
+gulp.task('copy', function() {
+    gulp.src(sources.assets)
+        .pipe(copy(distSources.root));
 });
 
 /**
@@ -111,7 +121,7 @@ gulp.task('browserify-prod', function() {
 /**
  * DEVELOPMENT WATCHER WITH LIVE RELOAD
  */
-gulp.task('serve', ['jade-dev', 'stylus-dev', 'browserify-dev', 'connect', 'open'], function() {
+gulp.task('serve', ['jade-dev', 'stylus-dev', 'browserify-dev', 'copy', 'connect', 'open'], function() {
     gulp.watch(sources.jade, ['jade-dev']);
     gulp.watch('./styles/**/*.styl', ['stylus-dev']);
     gulp.watch('./scripts/**/*.js', ['browserify-dev']);
@@ -120,4 +130,4 @@ gulp.task('serve', ['jade-dev', 'stylus-dev', 'browserify-dev', 'connect', 'open
 /**
  * DEFAULT: CREATE DIST FILES
  */
-gulp.task('default', ['jade-prod', 'stylus-prod', 'browserify-prod']);
+gulp.task('default', ['jade-prod', 'stylus-prod', 'browserify-prod', 'copy']);
