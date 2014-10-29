@@ -6,7 +6,7 @@ Space Invaders Game written in vanilla javascript.
 
 --------------------------------------------------
 
-### Technologies & libs used
+### Technologies & libs used ###
 
  * Gulp
  * Jade
@@ -15,13 +15,13 @@ Space Invaders Game written in vanilla javascript.
  * lodash
  * Javascript (S2)
 
- #### Instructions for developing
+##### Instructions for developing ####
 
  * Clone this repository
  * Run "npm install"
  * Run "gulp serve"
 
- #### Instructions for building
+##### Instructions for building ####
 
  * Clone this repository
  * Run "npm install"
