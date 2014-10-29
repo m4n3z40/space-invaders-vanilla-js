@@ -40,18 +40,17 @@ var Player = module.exports = Body.extend({
      * Atualiza o estado deste corpo em cada quadro do gamo
      */
     update: function() {
-        var me = this,
-            input = me.game.input;
+        var input = this.game.input;
 
-        if (input.isLeftPressed() && me.position.x > 0) {
-            me.position.x -= me.speed;
+        if (input.isLeftPressed() && this.position.x > 0) {
+            this.position.x -= this.speed;
         }
 
-        if (input.isRightPressed() && me.game.canvas.width > me.position.x + me.size.width) {
-            me.position.x += me.speed;
+        if (input.isRightPressed() && this.game.canvas.width > this.position.x + this.size.width) {
+            this.position.x += this.speed;
         }
 
-        if (input.isActionPressed() && !me.isFiring) {
+        if (input.isActionPressed() && !this.isFiring) {
             this.shoot();
         }
     },
@@ -60,22 +59,20 @@ var Player = module.exports = Body.extend({
      * Adiciona um corpo de Bullet ao game, dando efeito de tiro para cima
      */
     shoot: function() {
-        var me = this;
-
-        me.game.addBody(new Bullet(
-            me.game,
+        this.game.addBody(new Bullet(
+            this.game,
             null,
-            {x: me.position.x + me.size.width / 2, y: me.position.y - 5} ,
+            {x: this.position.x + this.size.width / 2, y: this.position.y - 5} ,
             'up'
         ));
 
-        me.isFiring = true;
-
-        setTimeout(function() {
-            me.isFiring = false;
-        }, me.fireDelay);
-
         this.game.playSound('shoot');
+
+        this.isFiring = true;
+
+        setTimeout((function() {
+            this.isFiring = false;
+        }).bind(this), this.fireDelay);
     },
 
     /**
