@@ -37,14 +37,14 @@ module.exports = Base.extend({
     },
 
     initPlayer: function() {
-        this.bodies.push(new Player(this));
+        this.addBody(new Player(this));
 
         console.log('Player added.');
     },
 
     initEnemies: function() {
         for(var i = 0; i < 30; i++) {
-            this.bodies.push(new Enemy(this, null, {
+            this.addBody(new Enemy(this, null, {
                 x: (i % 10) * 25 ,
                 y: (i % 3) * 25 + 10
             }));
@@ -62,6 +62,17 @@ module.exports = Base.extend({
                      body.position.y < -10 ||
                      body.position.y > canvas.height + 10);
         });
+    },
+
+    addBody: function(body) {
+        this.bodies.push(body);
+    },
+
+    removeBody: function(body) {
+        var id = this.bodies.indexOf(body);
+        if (id < 0) return;
+
+        this.bodies.splice(id, 1);
     },
 
     load: function() {

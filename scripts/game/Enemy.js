@@ -18,16 +18,12 @@ var Enemy = module.exports = Body.extend({
             this.speed = -this.speed;
         }
 
+        if (Math.random() > 0.995 && !this.alliedBellow()) {
+            this.shoot();
+        }
+
         this.position.x += this.speed;
         this.patrolX += this.speed;
-
-        if (Math.random() > 0.995 && !this.alliedBellow()) {
-            this.game.bodies.push(new Bullet(
-                this.game,
-                null,
-                {x: this.position.x + this.size.width / 2, y: this.position.y + this.size.height + 5}
-            ));
-        }
     },
 
     alliedBellow: function() {
@@ -38,6 +34,14 @@ var Enemy = module.exports = Body.extend({
                    Math.abs(invader.position.x - b.position.x) < b.size.width &&
                    b.position.y > invader.position.y;
         }).length > 0;
+    },
+
+    shoot: function() {
+        this.game.addBody(new Bullet(
+            this.game,
+            null,
+            {x: this.position.x + this.size.width / 2, y: this.position.y + this.size.height + 5}
+        ));
     }
 
 });

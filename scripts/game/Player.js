@@ -29,19 +29,25 @@ var Player = module.exports = Body.extend({
         }
 
         if (input.isActionPressed() && !me.isFiring) {
-            me.game.bodies.push(new Bullet(
-                me.game,
-                null,
-                {x: me.position.x + me.size.width / 2, y: me.position.y - 5},
-                'up'
-            ));
-
-            me.isFiring = true;
-
-            setTimeout(function() {
-                me.isFiring = false;
-            }, me.fireDelay)
+            this.shoot();
         }
+    },
+
+    shoot: function() {
+        var me = this;
+
+        me.game.addBody(new Bullet(
+            me.game,
+            null,
+            {x: me.position.x + me.size.width / 2, y: me.position.y - 5},
+            'up'
+        ));
+
+        me.isFiring = true;
+
+        setTimeout(function() {
+            me.isFiring = false;
+        }, me.fireDelay)
     }
 
 });
