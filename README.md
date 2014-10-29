@@ -27,8 +27,8 @@ Space Invaders Game written in vanilla javascript.
  * Run "npm install"
  * Run "gulp"
 
- ------------------------------------------------
+------------------------------------------------
 
- Based on Mary Rose Cook's talk [https://github.com/maryrosecook/strange-loop](https://github.com/maryrosecook/strange-loop)
+Based on Mary Rose Cook's talk [https://github.com/maryrosecook/strange-loop](https://github.com/maryrosecook/strange-loop)
 
- Cheers.
+Cheers.
