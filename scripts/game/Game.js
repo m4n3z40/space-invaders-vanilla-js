@@ -76,6 +76,7 @@ module.exports = Base.extend({
 
     reportCollisions: function() {
         var total = this.bodies.length,
+            collidedPairs = [],
             bodyA,
             bodyB;
 
@@ -84,15 +85,23 @@ module.exports = Base.extend({
                 bodyA = this.bodies[i];
                 bodyB = this.bodies[j];
 
-                if (bodyA && bodyB && this.bodiesCollided(bodyA, bodyB)) {
-                    bodyA.collision();
-                    bodyB.collision();
+                if (this.bodiesCollided(bodyA, bodyB)) {
+                    collidedPairs.push(bodyA);
+                    collidedPairs.push(bodyB);
                 }
             }
         }
+
+        collidedPairs.forEach(function(collidedBody) {
+            collidedBody.collision();
+        });
     },
 
     addBody: function(body) {
+        if (body instanceof Enemy) {
+            Enemy.enemiesLeft++;
+        }
+
         this.bodies.push(body);
     },
 

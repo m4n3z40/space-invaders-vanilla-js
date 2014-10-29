@@ -48,6 +48,10 @@ var Player = module.exports = Body.extend({
         setTimeout(function() {
             me.isFiring = false;
         }, me.fireDelay)
+    },
+
+    onDestroyed: function() {
+        window.alert('Game over! You lost :(');
     }
 
 });

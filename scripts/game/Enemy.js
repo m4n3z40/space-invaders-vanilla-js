@@ -42,6 +42,18 @@ var Enemy = module.exports = Body.extend({
             null,
             {x: this.position.x + this.size.width / 2, y: this.position.y + this.size.height + 5}
         ));
+    },
+
+    onDestroyed: function() {
+        if (--Enemy.enemiesLeft <= 0) {
+            Enemy.onDestroyedAll();
+        }
     }
 
+},{
+    enemiesLeft: 0,
+
+    onDestroyedAll: function() {
+        window.alert('Game over! YOU WON \\o/');
+    }
 });

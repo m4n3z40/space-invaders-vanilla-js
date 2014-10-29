@@ -22,6 +22,8 @@ module.exports = Base.extend({
 
     collision: function() {
         this.game.removeBody(this);
+
+        this.onDestroyed && this.onDestroyed();
     },
 
     update: function() {
