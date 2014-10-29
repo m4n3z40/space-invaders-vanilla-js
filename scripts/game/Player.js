@@ -39,7 +39,7 @@ var Player = module.exports = Body.extend({
         me.game.addBody(new Bullet(
             me.game,
             null,
-            {x: me.position.x + me.size.width / 2, y: me.position.y - 5},
+            {x: me.position.x + me.size.width / 2, y: me.position.y - 5} ,
             'up'
         ));
 

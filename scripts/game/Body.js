@@ -20,6 +20,10 @@ module.exports = Base.extend({
 
     },
 
+    collision: function() {
+        this.game.removeBody(this);
+    },
+
     update: function() {
 
     },

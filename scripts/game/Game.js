@@ -64,6 +64,34 @@ module.exports = Base.extend({
         });
     },
 
+    bodiesCollided: function(bodyA, bodyB) {
+        return (
+            bodyA !== bodyB &&
+            bodyA.position.x < bodyB.position.x + bodyB.size.width &&
+            bodyA.position.x + bodyA.size.width > bodyB.position.x &&
+            bodyA.position.y < bodyB.position.y + bodyB.size.height &&
+            bodyA.size.height + bodyA.position.y > bodyB.position.y
+        );
+    },
+
+    reportCollisions: function() {
+        var total = this.bodies.length,
+            bodyA,
+            bodyB;
+
+        for(var i = 0; i < total; i++) {
+            for(var j = i + 1; j < total; j++) {
+                bodyA = this.bodies[i];
+                bodyB = this.bodies[j];
+
+                if (bodyA && bodyB && this.bodiesCollided(bodyA, bodyB)) {
+                    bodyA.collision();
+                    bodyB.collision();
+                }
+            }
+        }
+    },
+
     addBody: function(body) {
         this.bodies.push(body);
     },
@@ -93,6 +121,8 @@ module.exports = Base.extend({
         });
 
         this.draw();
+
+        this.reportCollisions();
 
         this.collectGarbage();
 
